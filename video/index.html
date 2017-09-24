@@ -11,6 +11,50 @@
 </head>
 <body>
 
+<script>
+var vidyoConnector;
+
+    // Callback method when VidyoIO is done loading (pointer to this method is passed in the onload parameter while including the
+    // VidyoClient.js file)
+    function onVidyoClientLoaded(status) {
+    console.log("VidyoClient load state - " + status.state);
+    if (status.state == "READY") {
+        VC.CreateVidyoConnector({
+        viewId:"renderer", // Div ID where the composited video will be rendered, see VidyoConnector.html;
+        viewStyle:"VIDYO_CONNECTORVIEWSTYLE_Default", // Visual style of the composited renderer
+        remoteParticipants:10, // Maximum number of participants to render
+        logFileFilter:"error",
+        logFileName:"",
+        userData:""
+        }).then(function (vc) {
+        console.log("Create success");
+        vidyoConnector = vc;
+        }).catch(function(error){
+
+        });
+    }
+    }
+
+    function joinCall(){
+    // To join a video conference call Connect method
+    vidyoConnector.Connect({
+        host:"prod.vidyo.io",  // Server name, for most production apps it will be prod.vidyo.io
+        token:"node generateToken.js --key=rUlaMASgt1Byi4Kp3sKYDeQzo --appID=ApplicationID --userName=user1 --expiresInSecs=10000",          // Add generated token (https://developer.vidyo.io/documentation/4-1-16-8/getting-started#Tokens)
+        displayName:"Sachin",  // Display name
+        resourceId:"demoRoom", // Room name
+        onSuccess: function(){
+        console.log("Connected!! YAY!");
+        },
+        onFailure: function(reason){
+        console.error("Connection failed");
+        },
+        onDisconnected: function(reason) {
+        console.log(" disconnected - " + reason);
+        }
+    })
+    }
+
+</script>
 
 <style>
     #mentor{
@@ -20,13 +64,15 @@
     }
 
     #mentee{
-        padding-bottom: 25%;
+        padding-bottom: 12.5%;
     }
 
     #chat{
         padding-bottom: 25%;
     }
 </style>
+<script src="https://static.vidyo.io/latest/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded"></script>
+
 
 <nav class="navbar navbar-default">
   <div class="container-fluid">
@@ -41,227 +87,19 @@
 
 <div class="container-fluid">
   <div class="row">
-    <div id="mentor" class="col-sm-6" style="background-color: #000">
+    <div id="mentor" class="col-sm-6" style="background-color: rgba(0,0,0,0.5)">
         <!-- <iframe id="mentor"></iframe> -->
     </div>
 
-    <div id="mentee" class="col-sm-6" style="background-color: #500">
+    <div id="mentee" class="col-sm-3" style="background-color: rgba(255,0,0,0.5)"></div>
+    <div id="mentee" class="col-sm-3" style="background-color: rgba(0,255,0,0.5)"></div>
+    <div id="mentee" class="col-sm-3" style="background-color: rgba(0,0,255,0.5)"></div>
+    <div id="mentee" class="col-sm-3" style="background-color: rgba(0,0,0,0.5)"></div>
 
-    </div>
-
-    <div id="chat" class="col-sm-6" style="background-color: #900">
+    <div id="chat" class="col-sm-6" style="background-color: rgba(0,125,125,0.5)">
             
     </div>
   </div>
 </div>
-
-<!-- <div id="mentor" style="background-color: #000"></div> -->
-
-</body>
-</html>
-<html>
-<body>
-
-<h2>My First JavaScript</h2>
-
-<button type="button"
-onclick="document.getElementById('demo').innerHTML = Date()">
-Click me to display Date and Time.</button>
-
-<p id="demo"></p>
-
-</body>
-</html> 
-
-<script src="https://static.vidyo.io/4.1.16.8/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded"></script>
-
-/* When the library loads the callback will be invoked */
-<script type="text/javascript">
-  function onVidyoClientLoaded(status) {
-    switch (status.state) {
-      case "READY":    // The library is operating normally
-        // After the VidyoClient/VidyoConnector is successfully initialized,
-        // a global VC object will become available.
-        //
-        // Load the rest of the application here
-        // ...
-        break;
-      case "RETRYING":     // The library operating is temporarily paused
-        break;
-      case "FAILED":       // The library operating has stopped
-        break;
-      case "FAILEDVERSION":// The version of the Javascript library does not match the plugin
-        status.plugInVersion; // The Version of the plugin currently installed
-        status.jsVersion;     // The Version of the Javascript library loaded
-        break;
-      case "NOTAVAILABLE": // The library is not available
-        break;
-    }
-    status.downloadType;                // Available download types with possible values of "MOBILE" "PLUGIN" "APP"
-    status.downloadPathApp;             // Path to the application installer for the app which could be invoked with a protocol handler
-    status.downloadPathPlugIn;          // Path to the Plugin that can be installed
-    status.downloadPathWebRTCExtension; // Path to the optional extension required for Screen Sharing in WebRTC
-
-    return true; // Return true to reload the plugins if not available
-  }
-
-	  /* JavaScript Example: */
-	/* Assume that the DOM has a div with id="renderer" where the preview and the live conference should be rendered */
-	/* After the VidyoClient is successfully initialized a global VC object will become available  */
-
-	VC.CreateVidyoConnector({
-	  viewId: "renderer",                            // Div ID where the composited video will be rendered, see VidyoConnector.html
-	  viewStyle: "VIDYO_CONNECTORVIEWSTYLE_Default", // Visual style of the composited renderer
-	  remoteParticipants: 16,                        // Maximum number of participants
-	  logFileFilter: "warning all@VidyoConnector info@VidyoClient",
-	  logFileName:"",
-	  userData:""
-	}).then(function(vidyoConnector) {
-	   vidyoConnector.Connect({
-	     host: "prod.vidyo.io",
-	     token: generatedToken,
-	     displayName: "John Smith",
-	     resourceId: "JohnSmithRoom",
-
-	     // Define handlers for connection events.
-	     onSuccess: function()            {/* Connected */},
-	     onFailure: function(reason)      {/* Failed */},
-	     onDisconnected: function(reason) {/* Disconnected */}
-	    }).then(function(status) {
-	        if (status) {
-	            console.log("ConnectCall Success");
-	        } else {
-	            console.error("ConnectCall Failed");
-	        }
-	    }).catch(function() {
-	        console.error("ConnectCall Failed");
-	    });
-	}).catch(function() {
-	  console.error("CreateVidyoConnector Failed");
-	});
-
-//This is a nodejs script, and requires the following npm packages to run:
-//jssha, btoa and command-line-args
-
-//WARNING - Token generation should NEVER be done client side (in a browser for
-//example), because then you are exposing your developer key to customers
-/*jshint esversion: 6 */
-
-jsSHA = require('jssha');
-btoa = require('btoa');
-fs = require('fs');
-const commandLineArgs = require('command-line-args');
-var tokenGenerated = false;
-var vCardFileSpecified = false;
-
-const optionDefinitions = [{
-    name: 'key',
-    type: String
-}, {
-    name: 'appID',
-    type: String
-}, {
-    name: 'userName',
-    type: String
-}, {
-    name: 'vCardFile',
-    type: String
-}, {
-    name: 'expiresInSecs',
-    type: Number
-}, {
-    name: 'expiresAt',
-    type: String,
-    multiple: true
-}, {
-    name: 'help',
-    alias: 'h',
-    type: String
-}];
-
-const options = commandLineArgs(optionDefinitions);
-
-function printHelp() {
-    console.log("\nThis script will generate a provision login token from a developer key" +
-        "\nOptions:" +
-        "\n\t--key           Developer key supplied with the developer account" +
-        "\n\t--appID         ApplicationID supplied with the developer account" +
-        "\n\t--userName      Username to generate a token for" +
-        "\n\t--vCardFile     Path to the XML file containing a vCard for the user" +
-        "\n\t--expiresInSecs Number of seconds the token will be valid can be used instead of expiresAt" +
-        "\n\t--expiresAt     Time at which the token will expire ex: (2055-10-27T10:54:22Z) can be used instead of expiresInSecs" +
-        "\n");
-    process.exit();
-}
-
-if ((typeof options.help !== 'undefined') || (typeof options.key == 'undefined') || (typeof options.appID == 'undefined') || (typeof options.userName == 'undefined')) {
-    printHelp();
-}
-
-if (typeof options.vCardFile !== 'undefined') {
-    vCardFileSpecified = true;
-}
-
-function checkForVCardFileAndGenerateToken(key, appID, userName, expiresInSeconds) {
-    if (vCardFileSpecified) {
-        fs.readFile(options.vCardFile, 'utf8', function(err, data) {
-            if (err) {
-                return console.log("error reading vCard file " + err);
-            }
-            console.log("read in the fillowing vCard: " + data);
-            generateToken(key, appID, userName, expiresInSeconds, data);
-        });
-    } else {
-        generateToken(key, appID, userName, expiresInSeconds, "");
-    }
-}
-
-function generateToken(key, appID, userName, expiresInSeconds, vCard) {
-    var EPOCH_SECONDS = 62167219200;
-    var expires = Math.floor(Date.now() / 1000) + expiresInSeconds + EPOCH_SECONDS;
-    var shaObj = new jsSHA("SHA-384", "TEXT");
-    shaObj.setHMACKey(key, "TEXT");
-    jid = userName + '@' + appID;
-    var body = 'provision' + '\x00' + jid + '\x00' + expires + '\x00' + vCard;
-    shaObj.update(body);
-    var mac = shaObj.getHMAC("HEX");
-    var serialized = body + '\0' + mac;
-    console.log("\nGenerated Token: \n" + btoa(serialized));
-}
-
-//Date is in the format: "October 13, 2014 11:13:00"
-function generateTokenExpiresOnDate(key, appID, userName, date) {
-    var currentDate = new Date(date);
-    var dateInSeconds = Math.floor(currentDate.valueOf() / 1000);
-    var nowInSeconds = Math.floor(Date.now() / 1000);
-    if (dateInSeconds < nowInSeconds) {
-        console.log("Date is before current time, so token will be invalid");
-        expiresInSeconds = 0;
-    } else {
-        expiresInSeconds = dateInSeconds - nowInSeconds;
-        console.log("Expires in seconds: " + expiresInSeconds);
-    }
-    checkForVCardFileAndGenerateToken(key, appID, userName, expiresInSeconds);
-}
-
-console.log("\nGenerating token with the following inputs");
-console.log("Key: " + options.key);
-console.log("appID: " + options.appID);
-console.log("userName: " + options.userName);
-
-if (typeof options.vCardFile !== 'undefined') {
-    console.log("vCardFile: " + options.vCardFile);
-}
-
-if (typeof options.expiresInSecs !== 'undefined') {
-    console.log("expiresInSecs: " + options.expiresInSecs);
-    checkForVCardFileAndGenerateToken(options.key, options.appID, options.userName, options.expiresInSecs);
-
-} else if (typeof options.expiresAt !== 'undefined') {
-    console.log("expiresAt: " + options.expiresAt);
-    generateTokenExpiresOnDate(options.key, options.appID, options.userName, options.expiresAt);
-} else {
-    console.log("Error: Neither expiresInSecs or expiresAt parameters passed in");
-}
-
-</script>
+<button onclick="joinCall()">Connect</button>
+<div id="renderer"></div>
