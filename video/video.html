@@ -1,6 +1,6 @@
 <html>
 <head>
-  <title>Vidyo Sample</title>
+  <title>Group Video</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
 </head>
 <body>
@@ -9,7 +9,7 @@
 
    // Callback method when VidyoIO is done loading (pointer to this method is passed in the onload parameter while including the
    // VidyoClient.js file)
-    function onVidyoClientLoaded(status) {
+  function onVidyoClientLoaded(status) {
       console.log("VidyoClient load state - " + status.state);
       if (status.state == "READY") {
         VC.CreateVidyoConnector({
@@ -32,7 +32,8 @@
       // To join a video conference call Connect method
       vidyoConnector.Connect({
         host:"prod.vidyo.io",  // Server name, for most production apps it will be prod.vidyo.io
-        token:"cHJvdmlzaW9uADNGQjg1ODcxQzk4RTA3MUFAZmUxZTliLnZpZHlvLmlvADYzNjczNTM3ODc2AABiOWE0OTY5ZjBlMjZhYjdjYmE1MDM1MTBmNTVjZDQ5NDc2ZGE3MjYwOGM2NDg2ODlkOWVmMzUzM2YyZDkyMmRhMTJjYTA0ZTUwNzIxODExMTYzMGEwNGM5YzYxY2ZmNzY=",          // Add generated token (https://developer.vidyo.io/documentation/4-1-16-8/getting-started#Tokens)
+        token:"cHJvdmlzaW9uADBDOTY2RkUyRkJDMzI4NjNAY2IwMGFlMjIxZDRmNGY5YWE3MzMzODAxM2ZjMjI2OWEANjM2NzQ0NDUwNzcAADQ1NzBhN2ZlYjBhOTQwYzQxYmMzODY5YTVkNDE3ZDhhNDg0NWIzNTE4Y2QzYjRkNmU0ZTQwMzY4N2I1MjlmY2VlZWIyODdhOWZlY2FkZTNkMzc2ZTJmMTRkNDI5NGQ0Yw%3D%3D",          
+        //Add generated token (https://developer.vidyo.io/documentation/4-1-16-8/getting-started#Tokens)
         autoJoin:1,
         displayName:"Sachin",  // Display name
         resourceId:"demoRoom", // Room name

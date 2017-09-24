@@ -2,12 +2,6 @@
 <head>
   <title>Vidyo Sample</title>
   <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://use.fontawesome.com/5a88125890.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
   <script>
@@ -19,7 +13,7 @@
       console.log("VidyoClient load state - " + status.state);
       if (status.state == "READY") {
         VC.CreateVidyoConnector({
-          viewId:"mentor", // Div ID where the composited video will be rendered, see VidyoConnector.html;
+          viewId:"renderer", // Div ID where the composited video will be rendered, see VidyoConnector.html;
           viewStyle:"VIDYO_CONNECTORVIEWSTYLE_Default", // Visual style of the composited renderer
           remoteParticipants:10, // Maximum number of participants to render
           logFileFilter:"error",
@@ -38,8 +32,7 @@
       // To join a video conference call Connect method
       vidyoConnector.Connect({
         host:"prod.vidyo.io",  // Server name, for most production apps it will be prod.vidyo.io
-        token:"cHJvdmlzaW9uAHVzZXIyQGZlMWU5Yi52aWR5by5pbwA2MzY3MzQ0NjA1NAAANmYxNDI3ODM2ZmZjZGNmZDE5Y2Q5ZjQzYTk4NWM5NDQ1YzZmNWEwNzhjZmQxNTk4ZjNlMjMyMmY1Y2QyZWY4YmU4MWU2NjBlMjBhMDg4ZmI0ZjdiYTE3NGQ2MWFmMDg0"
-,          // Add generated token (https://developer.vidyo.io/documentation/4-1-16-8/getting-started#Tokens)
+        token:"cHJvdmlzaW9uADBDOTY2RkUyRkJDMzI4NjNAY2IwMGFlMjIxZDRmNGY5YWE3MzMzODAxM2ZjMjI2OWEANjM2NzQ0NDUwNzcAADQ1NzBhN2ZlYjBhOTQwYzQxYmMzODY5YTVkNDE3ZDhhNDg0NWIzNTE4Y2QzYjRkNmU0ZTQwMzY4N2I1MjlmY2VlZWIyODdhOWZlY2FkZTNkMzc2ZTJmMTRkNDI5NGQ0Yw%3D%3D",          // Add generated token (https://developer.vidyo.io/documentation/4-1-16-8/getting-started#Tokens)
         displayName:"Sachin",  // Display name
         resourceId:"demoRoom", // Room name
         onSuccess: function(){
@@ -55,47 +48,11 @@
     }
 
   </script>
-
-<style>
-    #mentor{
-        width: 660%;
-    }
-
-    #mentee{
-        padding-bottom: 12.5%;
-        height:25%;
-    }
-
-    #chat{
-        padding-bottom: 25%;
-        height:50%;
-        background-color: #000;
-    }
-</style>
-
-<nav class="navbar navbar-default">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="#">Comrades</a>
-    </div>
-    <ul class="nav navbar-right">
-      <li><a href="#"> Log out</a></li>
-    </ul>
-  </div>
-</nav>
-
-
-
-<script src="https://static.vidyo.io/latest/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded"></script>
-<button onclick="joinCall()">Connect</button>
-
-<div style="">
-  <div id="mentor" style=""></div>
-
-  <div class="chat" style="display:inline-block; width:33%;height:100%">
-
-</div>
-</div>
-
+  // Including the Vidyo.io package by adding the javascript path.
+  <script src="https://static.vidyo.io/latest/javascript/VidyoClient/VidyoClient.js?onload=onVidyoClientLoaded"></script>
+ <h3>Hello Vidyo!</h3>
+ <button onclick="joinCall()">Connect</button>
+ // Div where the video conference will be rendered
+ <div id="renderer"></div>
 </body>
 </html>
